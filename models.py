@@ -15,10 +15,10 @@ class generatorNet(nn.Module):
         self.enc_conv0 = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=self.dim1, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim1),
-            nn.ReLU(inplace=True), 
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True), 
             nn.Conv2d(in_channels=self.dim1, out_channels=self.dim1, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim1),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
         )
         
         # 256 -> 128
@@ -30,10 +30,10 @@ class generatorNet(nn.Module):
         self.enc_conv1 =  nn.Sequential(
             nn.Conv2d(in_channels=self.dim1, out_channels=self.dim2, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim2),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
             nn.Conv2d(in_channels=self.dim2, out_channels=self.dim2, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim2),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
         )
         
         # 128 -> 64
@@ -45,13 +45,13 @@ class generatorNet(nn.Module):
         self.enc_conv2 =  nn.Sequential(
             nn.Conv2d(in_channels=self.dim2, out_channels=self.dim3, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim3),
-            nn.ReLU(inplace=True),  
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),  
             nn.Conv2d(in_channels=self.dim3, out_channels=self.dim3, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim3),
-            nn.ReLU(inplace=True),  
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),  
             nn.Conv2d(in_channels=self.dim3, out_channels=self.dim3, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim3),
-            nn.ReLU(inplace=True),  
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),  
         )
         
         # 64 -> 32
@@ -63,13 +63,13 @@ class generatorNet(nn.Module):
         self.enc_conv3 = nn.Sequential(
             nn.Conv2d(in_channels=self.dim3, out_channels=self.dim4, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim4),
-            nn.ReLU(inplace=True), 
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True), 
             nn.Conv2d(in_channels=self.dim4, out_channels=self.dim4, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim4),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
             nn.Conv2d(in_channels=self.dim4, out_channels=self.dim4, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim4),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
         )
         
         # 32 -> 16
@@ -82,10 +82,10 @@ class generatorNet(nn.Module):
         self.bottleneck_conv =  nn.Sequential(
             nn.Conv2d(in_channels=self.dim4, out_channels=self.dim5, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim5),
-            nn.ReLU(inplace=True), 
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True), 
             nn.Conv2d(in_channels=self.dim5, out_channels=self.dim5, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim5),
-            nn.ReLU(inplace=True),                       
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),                       
         )
 
         # decoder (upsampling)
@@ -95,16 +95,16 @@ class generatorNet(nn.Module):
             nn.ConvTranspose2d(in_channels=self.dim5, out_channels=self.dim5, kernel_size=2, stride=2),
             nn.Conv2d(in_channels=self.dim5, out_channels=self.dim4, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim4),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
         )
         
         self.dec_conv0 = nn.Sequential(            
             nn.Conv2d(in_channels=self.dim4 * 2, out_channels=self.dim4, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim4),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
             nn.Conv2d(in_channels=self.dim4, out_channels=self.dim4, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim4),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
         )
         
         # 32 -> 64
@@ -113,16 +113,16 @@ class generatorNet(nn.Module):
             nn.ConvTranspose2d(in_channels=self.dim4, out_channels=self.dim4, kernel_size=2, stride=2),
             nn.Conv2d(in_channels=self.dim4, out_channels=self.dim3, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim3),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
         )
         
         self.dec_conv1 = nn.Sequential(            
             nn.Conv2d(in_channels=self.dim3 * 2, out_channels=self.dim3, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim3),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
             nn.Conv2d(in_channels=self.dim3, out_channels=self.dim3, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim3),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
         )
         
         # 64 -> 128
@@ -131,14 +131,14 @@ class generatorNet(nn.Module):
             nn.ConvTranspose2d(in_channels=self.dim3, out_channels=self.dim3, kernel_size=2, stride=2),
             nn.Conv2d(in_channels=self.dim3, out_channels=self.dim2, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim2),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
         )  
         
         
         self.dec_conv2 = nn.Sequential(            
             nn.Conv2d(in_channels=self.dim2 * 2, out_channels=self.dim2, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim2),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
         )
         
         # 128 -> 256
@@ -147,13 +147,13 @@ class generatorNet(nn.Module):
             nn.ConvTranspose2d(in_channels=self.dim2, out_channels=self.dim2, kernel_size=2, stride=2),
             nn.Conv2d(in_channels=self.dim2, out_channels=self.dim1, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim1),
-            nn.ReLU(inplace=True), 
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True), 
         )  
         
         self.dec_conv3 = nn.Sequential(            
             nn.Conv2d(in_channels=self.dim1 * 2, out_channels=3, kernel_size=3, padding=1),            
             nn.BatchNorm2d(3),
-            #nn.ReLU(inplace=True),            
+            #torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),            
         )
 
 
@@ -203,33 +203,33 @@ class discriminatorNet(nn.Module):
         self.enc_conv0 = nn.Sequential(
             nn.Conv2d(in_channels=6, out_channels=self.dim1, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim1),
-            nn.ReLU(inplace=True), 
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True), 
             nn.Conv2d(in_channels=self.dim1, out_channels=self.dim1, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim1),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
         )
         
         
         self.enc_conv1 =  nn.Sequential(
             nn.Conv2d(in_channels=self.dim1, out_channels=self.dim2, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim2),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
             nn.Conv2d(in_channels=self.dim2, out_channels=self.dim2, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim2),
-            nn.ReLU(inplace=True),
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),
         )
         
          
         self.enc_conv2 =  nn.Sequential(
             nn.Conv2d(in_channels=self.dim2, out_channels=self.dim3, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim3),
-            nn.ReLU(inplace=True),  
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),  
             nn.Conv2d(in_channels=self.dim3, out_channels=self.dim3, kernel_size=3, padding=1),            
             nn.BatchNorm2d(self.dim3),
-            nn.ReLU(inplace=True),  
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),  
             nn.Conv2d(in_channels=self.dim3, out_channels=3, kernel_size=3, padding=1),            
             nn.BatchNorm2d(3),
-            nn.ReLU(inplace=True),  
+            torch.nn.LeakyReLU(negative_slope=0.2, inplace=True),  
         )
         
 
