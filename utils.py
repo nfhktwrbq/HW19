@@ -13,11 +13,11 @@ class PicDataset(Dataset):
     Датасет с картинками, который паралельно подгружает их из папок
     производит скалирование и превращение в торчевые тензоры
     """
-    def __init__(self, files):
+    def __init__(self, files, transformList):
         super().__init__()
         # список файлов для загрузки
         self.files = sorted(files)   
-
+        self.transformList = transformList
         self.len_ = len(self.files)    
                       
     def __len__(self):
@@ -42,13 +42,13 @@ class PicDataset(Dataset):
         y = self.load_sample(yPath)
         y = self._prepare_sample(y)
 
-        hflip = np.random.sample() < 0.5
-        if hflip:
-            x.transpose(PIL.Image.FLIP_LEFT_RIGHT)
-            y.transpose(PIL.Image.FLIP_LEFT_RIGHT)
+        if 'RANDOM_HOR_FLIP' in self.transformList:
+            hflip = np.random.sample() < 0.5
+            if hflip:
+                x.transpose(PIL.Image.FLIP_LEFT_RIGHT)
+                y.transpose(PIL.Image.FLIP_LEFT_RIGHT)
         
-        crop = np.random.sample() < 0.5
-        if crop:
+        if 'RANDOM_CROP' in self.transformList:
             x0 = np.random.sample() *50
             x1 = np.random.sample() *50
             y0 = np.random.sample() *50
@@ -56,6 +56,19 @@ class PicDataset(Dataset):
             width, height = x.size
             x = x.crop((x0, y0, width-x1, height-y1))
             y = y.crop((x0, y0, width-x1, height-y1))
+
+        if 'RANDOM_ROTATION' in self.transformList:
+            angle = np.random.sample() * 360
+            x = x.rotate(angle)
+            y = y.rotate(angle)
+
+        if 'RANDOM_VERT_CROP' in self.transformList:
+            y0 = np.random.sample() *50
+            y1 = np.random.sample() *50
+            width, height = x.size
+            x = x.crop((0, y0, width, height-y1))
+            y = y.crop((0, y0, width, height-y1))
+
 
         x = transform(x)
         #x = np.array(x / 255, dtype='float32')

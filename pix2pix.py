@@ -11,19 +11,20 @@ import numpy as np
 from utils import printPics
 
 class Pix2pix:
-    def __init__(self, train_pathA, train_pathB, file_ext='jpg', val_part=0.25, batch_size=25, lr=0.0003, lambdal1 = 0.2):
+    def __init__(self, train_pathA, train_pathB, file_ext='jpg', val_part=0.25, batch_size=25, lr=0.0003, lambdal1 = 0.2, transform = ['RANDOM_HOR_FLIP','RANDOM_CROP']):
         self.train_pathA = train_pathA
         self.train_pathB = train_pathB
         self.val_part = val_part
         self.batch_size = batch_size
         self.lambdal1 = lambdal1
         self.lr = lr
+        self.transform = transform
         self.file_ext = file_ext
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
         train_files, val_files = train_test_split(self.prepareFiles(self.train_pathA, self.train_pathB) , test_size=self.val_part)
-        self.train_dataset = PicDataset(train_files)
-        self.val_dataset = PicDataset(val_files)
+        self.train_dataset = PicDataset(train_files, self.transform)
+        self.val_dataset = PicDataset(val_files, self.transform)
 
         self.gen = generatorNet().to(self.device)
         self.dsc = discriminatorNet().to(self.device)
@@ -41,7 +42,7 @@ class Pix2pix:
         return list(zip(trainA ,trainB ))
 
     def test(self, test_pathA, test_pathB):
-        test_dataset = PicDataset(self.prepareFiles(test_pathA, test_pathB))
+        test_dataset = PicDataset(self.prepareFiles(test_pathA, test_pathB), self.transform)
         test_loader = DataLoader(test_dataset ,batch_size=self.batch_size, shuffle=True)
         with torch.no_grad():       
             outputs = []
