@@ -59,8 +59,8 @@ class PicDataset(Dataset):
 
         if 'RANDOM_ROTATION' in self.transformList:
             angle = np.random.sample() * 360
-            x = x.rotate(angle)
-            y = y.rotate(angle)
+            x = x.rotate(angle, fillcolor='white')
+            y = y.rotate(angle, fillcolor='white')
 
         if 'RANDOM_VERT_CROP' in self.transformList:
             y0 = np.random.sample() *50
@@ -69,41 +69,14 @@ class PicDataset(Dataset):
             x = x.crop((0, y0, width, height-y1))
             y = y.crop((0, y0, width, height-y1))
 
-
         x = transform(x)
-        #x = np.array(x / 255, dtype='float32')
-        #x = torch.tensor(x)
-        #x = x/255
-        
-        
         y = transform(y) 
-        #y = y/255
-        #y = np.array(y / 255, dtype='float32')
-        #y = torch.tensor(y)
 
         return x, y
         
     def _prepare_sample(self, image):
         #image = image.resize((RESCALE_SIZE, RESCALE_SIZE))
         return image
-"""
-def printPics(inp, outp):
-    plt.figure(figsize=(18, 6))
-    for i in range(min([6, len(inp)])):        
-        plt.subplot(2, 6, i+1)
-        plt.axis("off") 
-        X = inp[i]
-        Y = outp[i]
-        X = X.numpy().transpose((1, 2, 0))
-        X = (X-X.min())/(X.max()-X.min()) 
-        plt.imshow(X)
-        plt.subplot(2, 6, i+7)
-        plt.axis("off")
-        Y = Y.numpy().transpose((1, 2, 0))
-        Y = (Y-Y.min())/(Y.max()-Y.min()) 
-        plt.imshow(Y/(Y.max() - Y.min()) - Y.min())
-    plt.show()"""
-
 
 def printPics(inp, outp, real):
     real = (real-real.min())/(real.max()-real.min()) 
